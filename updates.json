@@ -1,0 +1,75 @@
+{
+  "ok": true,
+  "result": [
+    {
+      "update_id": 218966038,
+      "message": {
+        "message_id": 1,
+        "from": {
+          "id": 177476435,
+          "is_bot": false,
+          "first_name": "Мади",
+          "username": "madd98",
+          "language_code": "ru"
+        },
+        "chat": {
+          "id": 177476435,
+          "first_name": "Мади",
+          "username": "madd98",
+          "type": "private"
+        },
+        "date": 1544001464,
+        "text": "/start",
+        "entities": [
+          {
+            "offset": 0,
+            "length": 6,
+            "type": "bot_command"
+          }
+        ]
+      }
+    },
+    {
+      "update_id": 218966039,
+      "message": {
+        "message_id": 2,
+        "from": {
+          "id": 177476435,
+          "is_bot": false,
+          "first_name": "Мади",
+          "username": "madd98",
+          "language_code": "ru"
+        },
+        "chat": {
+          "id": 177476435,
+          "first_name": "Мади",
+          "username": "madd98",
+          "type": "private"
+        },
+        "date": 1544001817,
+        "text": "говномастер"
+      }
+    },
+    {
+      "update_id": 218966040,
+      "message": {
+        "message_id": 3,
+        "from": {
+          "id": 177476435,
+          "is_bot": false,
+          "first_name": "Мади",
+          "username": "madd98",
+          "language_code": "ru"
+        },
+        "chat": {
+          "id": 177476435,
+          "first_name": "Мади",
+          "username": "madd98",
+          "type": "private"
+        },
+        "date": 1544002095,
+        "text": "мастер на говно"
+      }
+    }
+  ]
+}
