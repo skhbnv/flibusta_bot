@@ -67,51 +67,42 @@ def get_html(name):
     return r.text
 
 
-# def get_book(html):
-#     soup = BeautifulSoup(html, 'html.parser')
-#     links = list()
-#
-#     try:
-#         ul = soup.find('div', id="main").findAll("ul")[-1]
-#
-#         for li in ul:
-#             for a in li:
-#                 # links.append(a['href'])
-#                 if type(a) is bs4.element.Tag:
-#                     links.append(a['href'])
-#
-#     except IndexError:
-#         try:
-#             ul = soup.find('div', id="main").findAll("ul")[-2]
-#             print(ul)
-#             for li in ul:
-#                 for a in li:
-#                     # links.append(a['href'])
-#                     if type(a) is bs4.element.Tag:
-#                         links.append(a['href'])
-#         except IndexError:
-#             links = list()
-#
-#     print(links)
-#
-#     return links
-
-
 def get_book(html):
     soup = BeautifulSoup(html, 'html.parser')
-    
 
+    main = soup.find('div', id="main")
+    h3 = main.findAll("h3")
 
+    books_checker = False
+    links = list()
 
+    for i in h3:
+        if "Найденные книги" in i.get_text():
+            books_checker = True
+            # print(i.get_text())
 
+    if books_checker is True:
+        print("есть совпадения")
+        ul = main.findAll("ul")
+
+        for li in ul:
+            for a in li:
+                for href in a:
+                    if type(href) is bs4.element.Tag:
+                        links.append(href["href"])
+
+    else:
+        print("ничего не найдено")
+    return links
 
 
 def separate(one_book):
     booksLinks = list()
 
     for i in one_book:
-        if "b" in i:
+        if "/b/" in i:
             booksLinks.append(i)
+    print(booksLinks)
 
     return booksLinks
 
@@ -121,7 +112,6 @@ def get_concrete_book(chat_message):
 
     list_of = list()
     books = separate(get_book(get_html(chat_message)))
-    counter = 0
 
     for i in books:
 
@@ -131,12 +121,10 @@ def get_concrete_book(chat_message):
         soup = BeautifulSoup(text, 'html.parser')
 
         book_name = soup.find('h1', class_="title").findAll(text=True)
-
         author_block = soup.find("div", id="main").findAll("a")[34].findAll(text=True)
-
         links = "\n" + url+"/epub\n"+url+"/mobi\n"+url+"/fb2\n"
 
-        if len(list_of) == 5:
+        if len(list_of) == 7:
             break
         new_str = str(book_name[0]) + " " + str(author_block[0]) + links
         list_of.append(new_str)
@@ -144,27 +132,26 @@ def get_concrete_book(chat_message):
 
 
 def main():
-    get_book(get_html("хроники"))
-    # while True:
-    #     print("whiling")
-    #     if updates_checker():
-    #         chat_message = get_messages()['text']
-    #         print('entered the state' + chat_message)
-    #         chat_id = get_messages()['chat_id']
-    #         concrete = get_concrete_book(chat_message)
-    #
-    #         result_string = "Вот что мне удалось разыскать по вашему запросу \"{}\":\n".format(chat_message)
-    #
-    #         if len(concrete) != 0:
-    #             for i in concrete:
-    #                 result_string += i + "\n"
-    #                 print(i + " this is ш")
-    #         else:
-    #             result_string = " ничего не удалось найти :( "
-    #
-    #         send_message(chat_id, result_string)
-    #
-    #     time.sleep(0.5)
+    while True:
+        print("whiling")
+        if updates_checker():
+            chat_message = get_messages()['text']
+            print('entered the state' + chat_message)
+            chat_id = get_messages()['chat_id']
+            concrete = get_concrete_book(chat_message)
+
+            result_string = "Вот что мне удалось разыскать по вашему запросу \"{}\":\n".format(chat_message)
+
+            if len(concrete) != 0:
+                for i in concrete:
+                    result_string += i + "\n"
+                    print(i + " this is ш")
+            else:
+                result_string = " ничего не удалось найти :( "
+
+            send_message(chat_id, result_string)
+
+        time.sleep(0.5)
 
 
 if __name__ == '__main__':
